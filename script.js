@@ -58,7 +58,6 @@ window.addEventListener('DOMContentLoaded', function () {
         menu.style.transform = `translate(-100%)`;
       }
       */
-
       //version_2
       menu.classList.toggle('active-menu');
     };
@@ -70,7 +69,7 @@ window.addEventListener('DOMContentLoaded', function () {
   };
   toggleMenu();
 
-  // PopUp
+  // PopUp (modal window)
   const togglePopUp = () => {
     const popUp = document.querySelector('.popup');
     const popUpBtn = document.querySelectorAll('.popup-btn');
