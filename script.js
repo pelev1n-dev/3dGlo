@@ -1,8 +1,8 @@
 window.addEventListener('DOMContentLoaded', function () {
   'use strict';
 
-  //Timer
-  function countTimer(deadline){
+  // Timer
+  function countTimer(deadline) {
     let timerHours = document.querySelector('#timer-hours');
     let timerMinutes = document.querySelector('#timer-minutes');
     let timerSeconds = document.querySelector('#timer-seconds');
@@ -20,7 +20,7 @@ window.addEventListener('DOMContentLoaded', function () {
     }
 
     function check(n) {
-      if(n < 10 && n >= 0){
+      if (n < 10 && n >= 0) {
         n = '0' + n;
       }
       return n;
@@ -37,34 +37,43 @@ window.addEventListener('DOMContentLoaded', function () {
         return countTimer(new Date(deadline).getTime() + 86400000);
       }
     }
+
     updateClock();
   }
-  setInterval(countTimer, 1000, '18 february 2020 22:07:00' );
+
+  setInterval(countTimer, 1000, '18 february 2020 22:07:00');
   countTimer('18 february 2020 22:07:00');
 
   // Menu
   const toggleMenu = () => {
 
     const btnMenu = document.querySelector('.menu');
+
     const menu = document.querySelector('menu');
     const menuItems = menu.querySelectorAll('ul>li');
-    const closeBtn = document.querySelector('.close-btn');
 
     const handlerMenu = () => {
-      /* version_1
-      if(!menu.style.transform || menu.style.transform === `translate(-100%)`){
-        menu.style.transform = `translate(0)`;
-      } else {
-        menu.style.transform = `translate(-100%)`;
-      }
-      */
-      //version_2
       menu.classList.toggle('active-menu');
     };
 
     btnMenu.addEventListener('click', handlerMenu);
-    closeBtn.addEventListener('click', handlerMenu);
-    menuItems.forEach((elem) => elem.addEventListener('click', handlerMenu));
+
+    menu.addEventListener('click', (event) => {
+      let target = event.target;
+
+      if (target.classList.contains('close-btn')) {
+        handlerMenu();
+      } else {
+        target = target.closest('ul>li');
+        if (target) {
+          menuItems.forEach((item, i) => {
+            if (item === target) {
+              handlerMenu();
+            }
+          });
+        }
+      }
+    });
 
   };
   toggleMenu();
@@ -73,7 +82,6 @@ window.addEventListener('DOMContentLoaded', function () {
   const togglePopUp = () => {
     const popUp = document.querySelector('.popup');
     const popUpBtn = document.querySelectorAll('.popup-btn');
-    const popUpClose = document.querySelector('.popup-close');
     const popUpContent = document.querySelector('.popup-content');
     let count = 0;
     let popUpInterval;
@@ -81,7 +89,7 @@ window.addEventListener('DOMContentLoaded', function () {
     const popUpAnimate = () => {
       popUpInterval = requestAnimationFrame(popUpAnimate);
       count++;
-      if (count < 45){
+      if (count < 45) {
         popUpContent.style.left = count + '%';
       }
     };
@@ -89,22 +97,37 @@ window.addEventListener('DOMContentLoaded', function () {
     popUpBtn.forEach((elem) => {
       elem.addEventListener('click', () => {
         popUp.style.display = 'block';
-        if(screen.width > 768){
+        if (screen.width > 768) {
           popUpAnimate();
         }
       });
     });
 
-    popUpClose.addEventListener('click', () => {
-      popUp.style.display = 'none';
+    const cancelAnimation = () => {
       count = 0;
       cancelAnimationFrame(popUpInterval);
+    };
+
+    popUp.addEventListener('click', (event) => {
+      let target = event.target;
+
+      if (target.classList.contains('popup-close')) {
+        popUp.style.display = 'none';
+        cancelAnimation();
+      } else {
+        target = target.closest('.popup-content');
+
+        if (!target) {
+          popUp.style.display = 'none';
+          cancelAnimation();
+        }
+      }
     });
 
   };
   togglePopUp();
 
-  //Scroll
+  // Scroll
   const anchors = document.querySelectorAll('a[href*="#"]');
   for (let anchor of anchors) {
     anchor.addEventListener('click', (event) => {
@@ -118,5 +141,39 @@ window.addEventListener('DOMContentLoaded', function () {
       })
     })
   }
+
+  // Tabs
+  const tabs = () => {
+    const tabHeader = document.querySelector('.service-header');
+    const tab = tabHeader.querySelectorAll('.service-header-tab');
+    const tabContent = document.querySelectorAll('.service-tab');
+
+    const toggleTabContent = (index) => {
+      for (let i = 0; i < tabContent.length; i++) {
+        if (index === i) {
+          tab[i].classList.add('active');
+          tabContent[i].classList.remove('d-none');
+        } else {
+          tab[i].classList.remove('active');
+          tabContent[i].classList.add('d-none');
+        }
+      }
+    };
+
+    tabHeader.addEventListener('click', (event) => {
+      let target = event.target;
+      target = target.closest('.service-header-tab');
+
+      if (target) {
+        tab.forEach((item, i) => {
+          if (item === target) {
+            toggleTabContent(i);
+          }
+        });
+      }
+
+    });
+  };
+  tabs();
 
 });
