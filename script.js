@@ -47,8 +47,6 @@ window.addEventListener('DOMContentLoaded', function () {
   // Menu
   const toggleMenu = () => {
 
-    const btnMenu = document.querySelector('.menu');
-
     const menu = document.querySelector('menu');
     const menuItems = menu.querySelectorAll('ul>li');
 
@@ -56,23 +54,37 @@ window.addEventListener('DOMContentLoaded', function () {
       menu.classList.toggle('active-menu');
     };
 
-    btnMenu.addEventListener('click', handlerMenu);
 
-    menu.addEventListener('click', (event) => {
-      let target = event.target;
+    document.addEventListener('click',(event) => {
+      let targetMenu = event.target;
+      let targetClose = event.target;
+      let targetLink = event.target;
 
-      if (target.classList.contains('close-btn')) {
+      targetMenu = targetMenu.closest('.menu');
+      if(targetMenu){
         handlerMenu();
-      } else {
-        target = target.closest('ul>li');
-        if (target) {
-          menuItems.forEach((item, i) => {
-            if (item === target) {
-              handlerMenu();
-            }
-          });
-        }
+        return;
       }
+
+      targetClose = targetClose.closest('.close-btn');
+      if(targetClose){
+        handlerMenu();
+        return;
+      }
+
+      targetLink = targetLink.closest('ul>li');
+      if (targetLink) {
+        menuItems.forEach((item, i) => {
+          if (item === targetLink) {
+            handlerMenu();
+          }
+        });
+      }
+
+      if(menu.classList.contains('active-menu')){
+        handlerMenu();
+      }
+
     });
 
   };
@@ -138,8 +150,8 @@ window.addEventListener('DOMContentLoaded', function () {
       document.getElementById(blockID).scrollIntoView({
         behavior: "smooth",
         block: "start"
-      })
-    })
+      });
+    });
   }
 
   // Tabs
