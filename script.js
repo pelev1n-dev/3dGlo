@@ -54,11 +54,14 @@ window.addEventListener('DOMContentLoaded', function () {
       menu.classList.toggle('active-menu');
     };
 
-
     document.addEventListener('click',(event) => {
+
       let targetMenu = event.target;
       let targetClose = event.target;
       let targetLink = event.target;
+      let targetMain = event.target;
+
+      //console.log(target);
 
       targetMenu = targetMenu.closest('.menu');
       if(targetMenu){
@@ -81,7 +84,8 @@ window.addEventListener('DOMContentLoaded', function () {
         });
       }
 
-      if(menu.classList.contains('active-menu')){
+      targetMain = targetMain.closest('menu');
+      if(!targetMain && menu.classList.contains('active-menu')){
         handlerMenu();
       }
 
