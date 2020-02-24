@@ -61,8 +61,6 @@ window.addEventListener('DOMContentLoaded', function () {
       let targetLink = event.target;
       let targetMain = event.target;
 
-      //console.log(target);
-
       targetMenu = targetMenu.closest('.menu');
       if(targetMenu){
         handlerMenu();
@@ -198,7 +196,19 @@ window.addEventListener('DOMContentLoaded', function () {
     const slider = document.querySelector('.portfolio-content');
     const slide = document.querySelectorAll('.portfolio-item');
     const btn = document.querySelectorAll('.portfolio-btn');
-    const dot = document.querySelectorAll('.dot');
+    const ulDots = document.querySelector('.portfolio-dots');
+    let dot = document.querySelectorAll('.dot');
+
+    const renderItem = () => {
+      for(let i = 0; i < slide.length; i++){
+        let li = document.createElement('li');
+        li.classList.add('dot');
+        ulDots.appendChild(li);
+      }
+      dot = document.querySelectorAll('.dot');
+      dot[0].classList.add('dot-active');
+    };
+    renderItem();
 
     let currentSlide = 0;
     let interval;
@@ -222,9 +232,6 @@ window.addEventListener('DOMContentLoaded', function () {
       }
       nextSlide(slide, currentSlide, 'portfolio-item-active');
       nextSlide(dot, currentSlide, 'dot-active');
-
-
-
     };
 
     const startSlide = (time = 3000) => {
@@ -271,7 +278,6 @@ window.addEventListener('DOMContentLoaded', function () {
       nextSlide(dot, currentSlide, 'dot-active');
 
     });
-
     slider.addEventListener('mouseover', (event) => {
       if(event.target.matches('.portfolio-btn') || event.target.matches('.dot')){
         stopSlide();
