@@ -292,6 +292,33 @@ window.addEventListener('DOMContentLoaded', function () {
     startSlide(1500);
 
   };
-
   slider();
+
+  // Change image
+  const commandPhoto = document.querySelectorAll('.command__photo');
+  for (let i = 0; i < commandPhoto.length; i++){
+    let src = commandPhoto[i].getAttribute('src');
+    let data = commandPhoto[i].getAttribute('data-img');
+    commandPhoto[i].addEventListener('mouseover', (elem) => {
+      const target = elem.target.matches('img');
+      if(target){
+        commandPhoto[i].setAttribute('src', `${data}`);
+      }
+    });
+    commandPhoto[i].addEventListener('mouseout', (elem) => {
+      const target = elem.target.matches('img');
+      if(target){
+        commandPhoto[i].setAttribute('src', `${src}`);
+      }
+    });
+  }
+
+  // Calc
+  const calcItem = document.querySelectorAll('.calc-item');
+  for(let i = 0; i < calcItem.length; i++){
+    calcItem[i].addEventListener('input', () => {
+      calcItem[i].value = calcItem[i].value.replace(/[^0-9]/, '');
+    });
+  }
+
 });
