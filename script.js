@@ -333,6 +333,9 @@ window.addEventListener('DOMContentLoaded', function () {
       let total = 0;
       let countValue = 1;
       let dayValue = 1;
+      let count = 0;
+      let enumNum;
+
       const typeValue = calcType.options[calcType.selectedIndex].value;
       const squareValue = +calcSquare.value;
 
@@ -349,8 +352,17 @@ window.addEventListener('DOMContentLoaded', function () {
       if(typeValue && squareValue){
         total = price * typeValue * squareValue * countValue * dayValue;
       }
-
       totalValue.textContent = total;
+
+      const foo = () => {
+        totalValue.textContent = count;
+        if (count < total) {
+          count +=50;
+        } else {
+          clearInterval(enumNum);
+        }
+      };
+      enumNum = setInterval(foo, 1);
     };
 
     calcBlock.addEventListener('change', (event) => {
@@ -358,7 +370,7 @@ window.addEventListener('DOMContentLoaded', function () {
       if(target.matches('select') || target.matches('input')){
         countSum();
       }
-    })
+    });
   };
   calc(100);
 
