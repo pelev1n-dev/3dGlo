@@ -412,6 +412,27 @@
 	</div>
 </div>
 
+<script src="validate.js"></script>
+<script>
+	const valid = new Validate({
+		selector: '#form1',
+		pattern: {
+			zip: /\d{5,6}/
+		},
+		method: {
+			'phone': [
+				['notEmpty'],
+				['pattern', 'phone']
+			],
+			'email': [
+				['notEmpty'],
+				['pattern', 'email']
+			]
+		}
+	});
+
+	valid.init();
+</script>
 <script src="script.js"></script>
 </body>
 </html>

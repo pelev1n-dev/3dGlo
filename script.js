@@ -314,7 +314,7 @@ window.addEventListener('DOMContentLoaded', function () {
   }
 
   // Calc
-  const calcItem = document.getElementsByTagName('input');
+  const calcItem = document.getElementsByTagName('input[type = number]');
   for(let i = 0; i < calcItem.length; i++){
     calcItem[i].addEventListener('input', () => {
       calcItem[i].value = calcItem[i].value.replace(/[^0-9]/, '');
@@ -373,5 +373,55 @@ window.addEventListener('DOMContentLoaded', function () {
     });
   };
   calc(100);
+
+  // AJAX form
+
+  const sendForm = () => {
+    const errorMessage = 'Что то пошло не так...';
+    const loadMessage = document.createElement('div');
+    const successMessage = 'Спасибо! Мы с Вами свяжемся.';
+    const form = document.getElementById('form1');
+    const statusMessage = document.createElement('div');
+    statusMessage.style.cssText = 'font-size: 2rem;';
+
+    form.addEventListener('submit', (event) => {
+      event.preventDefault();
+      form.appendChild(loadMessage);
+      form.appendChild(statusMessage);
+      loadMessage.textContent = loadMessage.classList.add('spinning-square');
+      const formData = new FormData(form);
+      let body = {};
+      formData.forEach((val, key) => {
+        body[key] = val;
+      });
+      postData(body, () => {
+        statusMessage.textContent = successMessage;
+      }, (error) => {
+        statusMessage.textContent = errorMessage;
+        console.error(error);
+      });
+    });
+
+    const postData = (body, outputData, errorData) => {
+      const request = new XMLHttpRequest();
+      request.addEventListener('readystatechange', () => {
+        if (request.readyState !== 4){
+          return;
+        }
+        if (request.status === 200) {
+          outputData();
+          form.removeChild(loadMessage);
+          form.reset();
+        } else {
+          errorData(request.status);
+        }
+      });
+      request.open('POST', 'server.php');
+      request.setRequestHeader('Content-type', 'application/json');
+      request.send(JSON.stringify(body));
+    }
+
+  };
+  sendForm();
 
 });
