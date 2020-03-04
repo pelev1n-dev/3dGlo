@@ -413,6 +413,7 @@ window.addEventListener('DOMContentLoaded', function () {
           form.removeChild(loadMessage);
           form.reset();
         } else {
+          form.removeChild(loadMessage);
           errorData(request.status);
         }
       });
