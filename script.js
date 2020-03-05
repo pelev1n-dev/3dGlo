@@ -394,18 +394,31 @@ window.addEventListener('DOMContentLoaded', function () {
       formData.forEach((val, key) => {
         body[key] = val;
       });
-      postData(body)
-          .then(() => {
-            statusMessage.textContent = successMessage;
-          })
-          .catch((error) => {
-            statusMessage.textContent = errorMessage;
-            console.error(error)});
+      postData(body);
     });
 
-    const postData = (body) => {
-      return new Promise((resolve, reject) => {
-        const request = new XMLHttpRequest();
+    const postData = () => {
+      fetch('server.php')
+          .then((response) => {
+            if (response.status !== 200){
+              statusMessage.textContent = errorMessage;
+              form.removeChild(loadMessage);
+              throw new Error('status network not 200.');
+            }
+            return(response.text());
+          })
+          .then((data) => {
+            statusMessage.textContent = successMessage;
+            form.removeChild(loadMessage);
+            form.reset();
+          })
+          .catch((error) => console.log(error));
+    }
+  };
+  sendForm();
+
+  /*
+  * const request = new XMLHttpRequest();
         request.addEventListener('readystatechange', () => {
           if (request.readyState !== 4){
             return;
@@ -421,10 +434,6 @@ window.addEventListener('DOMContentLoaded', function () {
         });
         request.open('POST', 'server.php');
         request.setRequestHeader('Content-type', 'application/json');
-        request.send(JSON.stringify(body));
-      });
-    }
-  };
-  sendForm();
+        request.send(JSON.stringify(body));*/
 
 });
