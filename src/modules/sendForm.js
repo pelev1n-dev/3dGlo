@@ -2,11 +2,8 @@ const sendForm = () => {
   const errorMessage = 'Что то пошло не так...';
   const loadMessage = document.createElement('div');
   const successMessage = 'Спасибо! Мы с Вами свяжемся.';
-  const form = document.getElementById('form1');
-  const formFooter = document.getElementById('form2');
-  const formModal = document.getElementById('form3');
   const statusMessage = document.createElement('div');
-  statusMessage.style.cssText = 'font-size: 2rem;';
+  statusMessage.style.cssText = 'font-size: 2rem; color: white';
 
   const inputName = document.querySelectorAll('input[type = text]');
   const inputMessage = document.querySelector('.mess');
@@ -25,21 +22,49 @@ const sendForm = () => {
     inputMessage.value = inputMessage.value.replace(/[^,А-Яа-яЁё\s]/, '');
   });
 
-  form.addEventListener('submit', (event) => {
-    event.preventDefault();
-    form.appendChild(loadMessage);
-    form.appendChild(statusMessage);
-    loadMessage.textContent = loadMessage.classList.add('spinning-square');
-    const formData = new FormData(form);
-    let body = {};
-    formData.forEach((val, key) => {
-      body[key] = val;
-    });
-    postData(body);
+  const inputTel = document.querySelectorAll('input[type = tel]');
+
+  inputTel[0].addEventListener('input', () => {
+    inputTel[0].value = inputTel[0].value.replace(/[^\+0-9]/,'')
   });
 
-  const postData = () => {
-    fetch('server.php')
+  inputTel[1].addEventListener('input', () => {
+    inputTel[1].value = inputTel[1].value.replace(/[^\+0-9]/,'')
+  });
+
+  inputTel[2].addEventListener('input', () => {
+    inputTel[2].value = inputTel[2].value.replace(/[^\+0-9]/,'')
+  });
+
+  const inputMail = document.querySelectorAll('input[type = email]');
+
+  const forms = document.querySelectorAll('form');
+
+  forms.forEach((form, i, arr) => {
+    form.addEventListener('submit', (event) => {
+      event.preventDefault();
+      form.appendChild(loadMessage);
+      form.appendChild(statusMessage);
+      loadMessage.textContent = loadMessage.classList.add('spinning-square');
+      const formData = new FormData(form);
+      let body = {};
+      formData.forEach((val, key) => {
+        body[key] = val;
+      });
+      postData(body, form);
+    });
+  });
+
+  const postData = (body, form) => {
+    const options = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json;charset=utf-8'
+      },
+      body: JSON.stringify(body)
+    };
+    statusMessage.textContent = '';
+    fetch('server.php', options)
         .then((response) => {
           if (response.status !== 200){
             statusMessage.textContent = errorMessage;
@@ -51,10 +76,10 @@ const sendForm = () => {
         .then((data) => {
           statusMessage.textContent = successMessage;
           form.removeChild(loadMessage);
-          form.reset();
           setTimeout(() => {
             form.removeChild(statusMessage);
-          }, 5000);
+          }, 2000);
+          form.reset();
         })
         .catch((error) => console.log(error));
   };
