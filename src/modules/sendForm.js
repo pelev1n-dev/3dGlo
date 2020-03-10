@@ -9,31 +9,31 @@ const sendForm = () => {
   const inputMessage = document.querySelector('.mess');
 
   inputName[0].addEventListener('input', () => {
-    inputName[0].value = inputName[0].value.replace(/[^,А-Яа-яЁё\s]/, '');
+    inputName[0].value = inputName[0].value.replace(/[^,А-Яа-яЁё\s]/g, '');
   });
   inputName[1].addEventListener('input', () => {
-    inputName[1].value = inputName[1].value.replace(/[^,А-Яа-яЁё\s]/, '');
+    inputName[1].value = inputName[1].value.replace(/[^,А-Яа-яЁё\s]/g, '');
   });
   inputName[2].addEventListener('input', () => {
-    inputName[2].value = inputName[2].value.replace(/[^,А-Яа-яЁё\s]/, '');
+    inputName[2].value = inputName[2].value.replace(/[^,А-Яа-яЁё\s]/g, '');
   });
 
   inputMessage.addEventListener('input', () => {
-    inputMessage.value = inputMessage.value.replace(/[^,А-Яа-яЁё\s]/, '');
+    inputMessage.value = inputMessage.value.replace(/[^,А-Яа-яЁё\s]/g, '');
   });
 
   const inputTel = document.querySelectorAll('input[type = tel]');
 
   inputTel[0].addEventListener('input', () => {
-    inputTel[0].value = inputTel[0].value.replace(/[^\+0-9]/,'')
+    inputTel[0].value = inputTel[0].value.replace(/[^\+0-9]/g,'')
   });
 
   inputTel[1].addEventListener('input', () => {
-    inputTel[1].value = inputTel[1].value.replace(/[^\+0-9]/,'')
+    inputTel[1].value = inputTel[1].value.replace(/[^\+0-9]/g,'')
   });
 
   inputTel[2].addEventListener('input', () => {
-    inputTel[2].value = inputTel[2].value.replace(/[^\+0-9]/,'')
+    inputTel[2].value = inputTel[2].value.replace(/[^\+0-9]/g,'')
   });
 
   const inputMail = document.querySelectorAll('input[type = email]');
