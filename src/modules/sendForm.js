@@ -2,9 +2,9 @@ const sendForm = () => {
   const errorMessage = 'Что то пошло не так...';
   const loadMessage = document.createElement('div');
   const successMessage = 'Спасибо! Мы с Вами свяжемся.';
-  const form1 = document.getElementById('form1');
-  const form2 = document.getElementById('form2');
-  const form3 = document.getElementById('form3');
+  const form = document.getElementById('form1');
+  const formFooter = document.getElementById('form2');
+  const formModal = document.getElementById('form3');
   const statusMessage = document.createElement('div');
   statusMessage.style.cssText = 'font-size: 2rem;';
 
@@ -25,17 +25,17 @@ const sendForm = () => {
     inputMessage.value = inputMessage.value.replace(/[^,А-Яа-яЁё\s]/, '');
   });
 
-  form1.addEventListener('submit', (event) => {
+  form.addEventListener('submit', (event) => {
     event.preventDefault();
-    form1.appendChild(loadMessage);
-    form1.appendChild(statusMessage);
+    form.appendChild(loadMessage);
+    form.appendChild(statusMessage);
     loadMessage.textContent = loadMessage.classList.add('spinning-square');
-    const formData = new FormData(form1);
-    let body1 = {};
+    const formData = new FormData(form);
+    let body = {};
     formData.forEach((val, key) => {
-      body1[key] = val;
+      body[key] = val;
     });
-    postData(body1);
+    postData(body);
   });
 
   const postData = () => {
@@ -43,32 +43,21 @@ const sendForm = () => {
         .then((response) => {
           if (response.status !== 200){
             statusMessage.textContent = errorMessage;
-            form1.removeChild(loadMessage);
+            form.removeChild(loadMessage);
             throw new Error('status network not 200.');
           }
           return(response.text());
         })
         .then((data) => {
           statusMessage.textContent = successMessage;
-          form1.removeChild(loadMessage);
-          form1.reset();
+          form.removeChild(loadMessage);
+          form.reset();
           setTimeout(() => {
-            form1.removeChild(statusMessage);
+            form.removeChild(statusMessage);
           }, 5000);
         })
         .catch((error) => console.log(error));
   };
 
-  form2.addEventListener('submit', (event) => {
-    event.preventDefault();
-    form1.appendChild(loadMessage);
-    form1.appendChild(statusMessage);
-    const formData = new FormData(form2);
-    let body = {};
-    formData.forEach((val, key) => {
-      body[key] = val;
-    });
-    postData(body);
-  });
 };
 export default sendForm;

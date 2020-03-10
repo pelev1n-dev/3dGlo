@@ -33,11 +33,14 @@ for (let anchor of anchors) {
     event.preventDefault();
 
     const blockID = anchor.getAttribute('href').substring(1);
+    let tmp = document.getElementById(blockID);
+    if (tmp) {
+      tmp.scrollIntoView({
+        behavior: "smooth",
+        block: "start"
+      });
+    }
 
-    document.getElementById(blockID).scrollIntoView({
-      behavior: "smooth",
-      block: "start"
-    });
   });
 }
 
